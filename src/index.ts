@@ -6,6 +6,14 @@ import { User } from './modules/user'
 const HOST = '0.0.0.0'
 const PORT = 8081
 const DB_PATH = 'storage/db.json'
+const API_PATH = 'addressee'
+
+function createFinalizer (res: ServerResponse) {
+    return (code: number) => {
+        res.statusCode = code
+        res.end()
+    }
+}
 
 async function main() {
     const db = new MiniDB<User>(DB_PATH)
@@ -16,15 +24,12 @@ async function main() {
             .map((v, i) => [users[i], v])
     )
     createServer((req, res) => {
-        const finalize = (code: number) => {
-            res.statusCode = code
-            res.end()
-        }
+        const finalize = createFinalizer(res)
         if (!req.url) {
             return finalize(400)
         }
         const urlParts = req.url!.split('/')
-        if (urlParts[1] !== 'addressee' || urlParts.length !== 3 || !db.has(urlParts[2])) {
+        if (urlParts[1] !== API_PATH || urlParts.length !== 3 || !db.has(urlParts[2])) {
             return finalize(404)
         }
         const userId = assignees[urlParts[2]]
