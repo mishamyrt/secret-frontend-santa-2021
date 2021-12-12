@@ -7,7 +7,7 @@ const host = '0.0.0.0'
 const port = 8081
 
 async function main() {
-    const db = new MiniDB<User>('storage/data.json')
+    const db = new MiniDB<User>('storage/db.json')
     await db.load()
     const users = db.keys()
     const assignees = Object.fromEntries(
