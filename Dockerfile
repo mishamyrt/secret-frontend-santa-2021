@@ -9,6 +9,5 @@ RUN npm run build
 FROM node:latest
 WORKDIR /app
 COPY --from=builder /build/app ./app
-COPY *.json ./
 EXPOSE 8081
 CMD ["node", "app/index"]
