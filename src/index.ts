@@ -3,11 +3,12 @@ import { MiniDB } from './modules/minidb'
 import { shuffleArray } from './modules/random'
 import { User } from './modules/user'
 
-const host = '0.0.0.0'
-const port = 8081
+const HOST = '0.0.0.0'
+const PORT = 8081
+const DB_PATH = 'storage/db.json'
 
 async function main() {
-    const db = new MiniDB<User>('storage/db.json')
+    const db = new MiniDB<User>(DB_PATH)
     await db.load()
     const users = db.keys()
     const assignees = Object.fromEntries(
@@ -37,6 +38,6 @@ async function main() {
             ...user,
             shown: true
         })
-    }).listen(port, host)
+    }).listen(PORT, HOST)
 }
 main()
