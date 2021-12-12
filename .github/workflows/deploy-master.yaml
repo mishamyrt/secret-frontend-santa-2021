@@ -19,4 +19,4 @@ jobs:
       run: docker stop secret-app || true && docker rm -f secret-app || true
 
     - name: Start image
-      run: docker run --name secret-app -p 8081:8081 secret-santa:latest
+      run: docker run --name secret-app -v /root/storage:storage/ -p 8081:8081 secret-santa:latest
