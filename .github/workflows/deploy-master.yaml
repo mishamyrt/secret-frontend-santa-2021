@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Rebuild image
+      run: docker build -t secret-santa:latest ./
+
+    - name: Stop image
+      run: docker stop secret-app || true && docker rm -f secret-app || true
+
+    - name: Start image
+      run: docker run secret-app -p 8081:8081 secret-santa:latest
